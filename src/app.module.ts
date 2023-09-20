@@ -4,20 +4,18 @@ import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import databaseConfig from './config/database.config';
 
 
 @Module({
   imports: [
+    // ConfigModule.forRoot({
+    //   envFilePath: '.env',
+    //   isGlobal: true,
+    // }),
+    // MongooseModule.forRoot(process.env.DB_URI),
+    MongooseModule.forRoot("mongodb://localhost:27017/gestion"),
+    ConfigModule.forRoot(),
     ArticlesModule,
-    ConfigModule.forRoot({ isGlobal: true, load: [databaseConfig] }),
-    MongooseModule.forRootAsync({
-      useFactory: (config) => ({
-        uri: config.get('database.uri'),
-      }),
-      inject: [ConfigService],
-    }),
-    
   ],
   controllers: [AppController],
   providers: [AppService],
